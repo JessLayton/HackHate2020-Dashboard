@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import numpy as np
-from pandas.core.groupby.generic import DataFrameGroupBy
 import plotly.express as px
 import pandas as pd
 import requests
