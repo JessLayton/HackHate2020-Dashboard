@@ -33,10 +33,12 @@ def get_reporting_trends():
   reported_plot = px.line(melted_sorted_df, x="Quarter", y='Number of Cases', color='Reported', title="Disparity in cases reported to police")
 
   reported_plot.update_layout(
+    autosize=True,
+    height=600,
     legend=dict(
       orientation="v",
       yanchor="top",
-      y=-0.3,
+      y=-0.1,
       xanchor="left",
       x=0
     )
@@ -72,14 +74,15 @@ def get_reasons_not_reported():
   reasons_plot = px.bar(sorted_df, x="Quarter", y=reasons, barmode='group', title="Reasons for not reporting cases to the police", labels=dict(value="Reason Count"))
 
   reasons_plot.update_layout(
+    autosize=True,
+    height=600,
     legend=dict(
       orientation="v",
       yanchor="top",
-      y=-0.3,
+      y=-0.1,
       xanchor="left",
       x=0
     ),
-    legend_title_text='Reason Given'   
+    legend_title_text='Reason Given',
   )
-
   return reasons_plot
