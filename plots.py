@@ -30,7 +30,19 @@ def get_reporting_trends():
   sorted_df = pd.DataFrame(data=restructured_data.values())
   melted_sorted_df = pd.melt(sorted_df, id_vars=['Quarter'], value_vars=['Cases Handled', 'Cases Referred To Police', 'Cases Not Referred To Police'], value_name='Number of Cases', var_name='Reported')
 
-  return px.line(melted_sorted_df, x="Quarter", y='Number of Cases', color='Reported', title="Disparity in cases reported to police")
+  reported_plot = px.line(melted_sorted_df, x="Quarter", y='Number of Cases', color='Reported', title="Disparity in cases reported to police")
+
+  reported_plot.update_layout(
+    legend=dict(
+      orientation="v",
+      yanchor="top",
+      y=-0.3,
+      xanchor="left",
+      x=0
+    )
+  )
+
+  return reported_plot
 
 def get_reasons_not_reported():
   """
@@ -40,12 +52,12 @@ def get_reasons_not_reported():
   sorted_data = sort_by_quarter(response.json())
   restructured_data = []
   for datum in sorted_data:
-    dict = {
+    period = {
       'Quarter': f"Q{datum['Quarter']} {datum['Year']}"
     }
     for key, value in datum['NoReportReason'].items():
-      dict[key] = value
-    restructured_data.append(dict)
+      period[key] = value
+    restructured_data.append(period)
   sorted_df = pd.DataFrame(data=restructured_data)
   reasons = [
     'Client decision -  I do not trust police',
@@ -57,4 +69,17 @@ def get_reasons_not_reported():
     'Other'
   ]
 
-  return px.bar(sorted_df, x="Quarter", y=reasons, barmode='group', title="Reasons for not reporting cases to the police")
+  reasons_plot = px.bar(sorted_df, x="Quarter", y=reasons, barmode='group', title="Reasons for not reporting cases to the police", labels=dict(value="Reason Count"))
+
+  reasons_plot.update_layout(
+    legend=dict(
+      orientation="v",
+      yanchor="top",
+      y=-0.3,
+      xanchor="left",
+      x=0
+    ),
+    legend_title_text='Reason Given'   
+  )
+
+  return reasons_plot
