@@ -13,6 +13,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+server = app.server
 
 def get_layout():
     return html.Div(children=[
@@ -43,4 +44,4 @@ def get_layout():
 app.layout = get_layout
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0')
+    app.run_server(debug=False, host='0.0.0.0')
