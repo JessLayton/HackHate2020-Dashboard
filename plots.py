@@ -13,6 +13,8 @@ def get_reporting_trends():
   Return a plotly graph for the trends in reporting of cases.
   """
   response = requests.get(f'{get_backend_location()}/api/getResponses', json=["Quarter", "Year", "CasesNotReferredToPolice", "CasesReferredToPolice"])
+  if response.json() == []:
+    return 'No data'
   sorted_data = sort_by_quarter(response.json())
   restructured_data = {}
   for datum in sorted_data:
@@ -51,6 +53,8 @@ def get_reasons_not_reported():
   Return a plotly graph for the reasons why cases haven't been reported to the police.
   """
   response = requests.get(f'{get_backend_location()}/api/getResponses', json=["NoReportReason", "Quarter", "Year"])
+  if response.json() == []:
+    return 'No data'
   sorted_data = sort_by_quarter(response.json())
   restructured_data = []
   for datum in sorted_data:
