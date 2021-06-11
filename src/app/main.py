@@ -1,3 +1,6 @@
+'''
+Main app code, including routing.
+'''
 from flask import Flask
 
 app = Flask(__name__)
