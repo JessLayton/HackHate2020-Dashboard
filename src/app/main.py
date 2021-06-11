@@ -7,12 +7,12 @@ app = Flask(__name__)
 
 
 @app.route("/reportingNumbers", methods=['POST'])
-def index() -> str:
+def reportingNumbers() -> str:
     # transform a dict into an application/json response 
     return {"message": "Reporting numbers works"}
 
 @app.route("/unreportedCases", methods=['POST'])
-def index() -> str:
+def unreportedCases() -> str:
     # transform a dict into an application/json response 
     return {"message": "Unreported cases works"}
 
