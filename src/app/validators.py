@@ -166,7 +166,7 @@ def validate_reporting_numbers(data):
     return validate_payload(data, REPORTING_NUMBERS_SCHEMA)
 
 
-def validate_reporting_numbers(data):
+def validate_unreported_cases(data):
     '''
     Returns `(True, '')` if `data` is a valid payload for the /unreportedCases endpoint.
 
