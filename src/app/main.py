@@ -1,8 +1,8 @@
 '''
 Main app code, including routing.
 '''
-from flask import Flask
-import validators
+from flask import Flask, request
+from .validators import validate_reporting_numbers, validate_unreported_cases
 
 app = Flask(__name__)
 
@@ -17,15 +17,15 @@ def reporting_numbers() -> str:
     try:
         # Validate request JSON
         data = request.get_json()
-        success, message = validators.validate_reporting_numbers(data)
+        success, message = validate_reporting_numbers(data)
         # If request JSON is invalid, return a failure message.
         if not success:
             return {"status": "fail", "message": message}
 
         quarters = []
 
-        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter')]:
-            quarter_text = f"Q{quarter_data['quarter'] quarter_data['year']"
+        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter'])):
+            quarter_text = f"Q{quarter_data['quarter']} {quarter_data['year']}"
             reported = quarter_data['reportingDetails']['reported']
             supported = quarter_data['reportingDetails']['supported']
             quarters.append(
@@ -39,7 +39,7 @@ def reporting_numbers() -> str:
     except Exception as err:
         return {"status": "error", "message": repr(err)}
 
-    return {"status": "success", "data": quarters}
+    return {"status": "success", "data": {"body": quarters}}
 
 
 @app.route("/unreportedCases", methods=['POST'])
@@ -52,22 +52,22 @@ def unreported_cases() -> str:
     try:
         # Validate request JSON
         data = request.get_json()
-        success, message = validators.validate_reporting_numbers(data)
+        success, message = validate_unreported_cases(data)
         # If request JSON is invalid, return a failure message.
         if not success:
             return {"status": "fail", "message": message}
 
         quarters = []
 
-        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter')]:
-            quarter_text = f"Q{quarter_data['quarter'] quarter_data['year']"
+        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter'])):
+            quarter_text = f"Q{quarter_data['quarter']} {quarter_data['year']}"
             quarter = {"quarter": quarter_text}
             quarter.update(quarter_data['unreportedCases'])
             quarters.append(quarter)
     except Exception as err:
         return {"status": "error", "message": repr(err)}
 
-    return {"status", "success", "data": quarters}
+    return {"status": "success", "data": {"body": quarters}}
 
 
 if __name__ == '__main__':
