@@ -11,27 +11,35 @@ app = Flask(__name__)
 def reporting_numbers() -> str:
     '''
     Return a dict to be used by the dashboard to display the data.
+
+    Uses the JSend format.
     '''
-    # Validate request JSON
-    data = request.get_json()
-    validators.validate_reporting_numbers(data)
+    try:
+        # Validate request JSON
+        data = request.get_json()
+        success, message = validators.validate_reporting_numbers(data)
+        # If request JSON is invalid, return a failure message.
+        if not success:
+            return {"status": "fail", "message": message}
 
-    quarters = []
+        quarters = []
 
-    for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter')]:
-        quarter_text = f"Q{quarter_data['quarter'] quarter_data['year']"
-        reported = quarter_data['reportingDetails']['reported']
-        supported = quarter_data['reportingDetails']['supported']
-        quarters.append(
-            {
-                "quarter": quarter_text,
-                "reported": reported,
-                "supported": supported,
-                "totalHandled": reported + supported
-            }
-        )
+        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter')]:
+            quarter_text = f"Q{quarter_data['quarter'] quarter_data['year']"
+            reported = quarter_data['reportingDetails']['reported']
+            supported = quarter_data['reportingDetails']['supported']
+            quarters.append(
+                {
+                    "quarter": quarter_text,
+                    "reported": reported,
+                    "supported": supported,
+                    "totalHandled": reported + supported
+                }
+            )
+    except Exception as err:
+        return {"status": "error", "message": repr(err)}
 
-    return {"data": quarters}
+    return {"status": "success", "data": quarters}
 
 
 @app.route("/unreportedCases", methods=['POST'])
