@@ -139,3 +139,4 @@ cython_debug/
 
 # Local config
 local.py
+.vscode
