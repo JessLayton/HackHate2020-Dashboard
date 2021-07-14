@@ -160,7 +160,7 @@ class TestEndpoints:
             content_type='application/json'
         )
 
-        assert response.status_code == 405å
+        assert response.status_code == 405
 
     def test_unreported_cases_failure_get_request(self, client):
         response = client.get(
