@@ -85,17 +85,17 @@ def validate_payload(data, schema):
         return (False, e.message)
 
     # Check if each year and quarter appears at most once.
-    quarters = []
-    for obj in data:
-        quarter = (obj["year"], obj["quarter"])
-        if quarter not in quarters:
-            quarters.append(quarter)
-        else:
-            # This quarter appears more than once, the payload is invalid.
-            return (
-                False,
-                f"Data for {quarter[0]} Q{quarter[1]} appears more than once",
-            )
+    # quarters = []
+    # for obj in data:
+    #     quarter = (obj["year"], obj["quarter"])
+    #     if quarter not in quarters:
+    #         quarters.append(quarter)
+    #     else:
+    #         # This quarter appears more than once, the payload is invalid.
+    #         return (
+    #             False,
+    #             f"Data for {quarter[0]} Q{quarter[1]} appears more than once",
+    #         )
 
     # All checks passed, the payload is valid.
     return (True, "")
