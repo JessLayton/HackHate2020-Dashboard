@@ -2,7 +2,7 @@
 Main app code, including routing.
 '''
 from flask import Flask, request
-from .validators import validate_reporting_numbers, validate_unreported_cases
+from validators import validate_reporting_numbers, validate_unreported_cases
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ def reporting_numbers() -> str:
 
         quarters = []
 
-        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter'])):
+        for quarter_data in sorted(data, key=lambda x: (x['year'], x['quarter'])):
             quarter_text = f"Q{quarter_data['quarter']} {quarter_data['year']}"
             reported = quarter_data['reportingDetails']['reported']
             supported = quarter_data['reportingDetails']['supported']
@@ -59,7 +59,7 @@ def unreported_cases() -> str:
 
         quarters = []
 
-        for quarter_data in sorted(data['body'], key=lambda x: (x['year'], x['quarter'])):
+        for quarter_data in sorted(data, key=lambda x: (x['year'], x['quarter'])):
             quarter_text = f"Q{quarter_data['quarter']} {quarter_data['year']}"
             quarter = {"quarter": quarter_text}
             quarter.update(quarter_data['unreportedCases'])
@@ -71,4 +71,4 @@ def unreported_cases() -> str:
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=8000)
